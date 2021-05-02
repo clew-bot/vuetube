@@ -1,12 +1,24 @@
 <template>
   <ul>
-      VideoList
+ <VideoListItem 
+    v-for="video in videos"
+    v-bind:video="video"
+    v-bind:key="video"
+>
+ </VideoListItem>
   </ul>
 </template>
 
 <script>
+import VideoListItem from "./VideoListItem"
+
 export default {
-    name: 'VideoList'
+    name: 'VideoList',
+    components: {VideoListItem},
+    props: {
+        // type checking 
+        videos: Array
+    }
 }
 </script>
 

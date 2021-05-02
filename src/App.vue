@@ -2,7 +2,10 @@
 <div>
     <!-- can also do v-on:termChange -->
 <SearchBar @termChange="onTermChange"></SearchBar>
-<VideoList></VideoList>
+<!-- v-bind:PROPERTY NAME THAT WE WANT TO SHARE="NAME OF PROPERTY THAT WE WANT TP SHOW" -->
+<!-- can also do v-bind:videos -->
+<VideoList :videos="videos"></VideoList>
+
   </div>
 </template>
 
@@ -18,13 +21,13 @@ export default {
     name: "App",
     //app knows it can see the SearchBar 
     components: {SearchBar, VideoList},
-    mounted() {
-    
+    data() {
+        return { videos: [] };
     },
     methods: {
         //first arguement is second argument from emit (e.target.value)
         onTermChange : async function(searchTerm) {
-            try{
+            
             const res = await axios.get('https://www.googleapis.com/youtube/v3/search', {
                 params: {
                     key: process.env.VUE_APP_APIURL,
@@ -34,12 +37,9 @@ export default {
                     q: searchTerm
                 }
             
-            })
+            }).catch((err) => {console.log("Probably too many requests", err)})
             console.log(res)
-            } catch(err) {
-                console.log(err)
-            }
-          
+            this.videos = res.data.items;
         }
     }
 };
