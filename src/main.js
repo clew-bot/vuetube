@@ -7,3 +7,6 @@ new Vue ({
     el: "#app",
     render: (h) => h(App)
 });
+
+// can also do .$mount('#app');
+//two different ways of doing the same operation, vue is like that

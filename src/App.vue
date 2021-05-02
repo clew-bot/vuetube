@@ -1,6 +1,7 @@
 <template>
 <div>
-<SearchBar></SearchBar>
+    <!-- can also do v-on:termChange -->
+<SearchBar @termChange="onTermChange"></SearchBar>
   </div>
 </template>
 
@@ -10,7 +11,13 @@ export default {
     // helpful for developers for debugging tools
     name: "App",
     //app knows it can see the SearchBar 
-    components: {SearchBar}
+    components: {SearchBar},
+    methods: {
+        //first arguement is second argument from emit (e.target.value)
+        onTermChange(searchTerm) {
+            console.log(searchTerm)
+        }
+    }
 };
 </script>
 
