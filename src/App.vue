@@ -1,17 +1,21 @@
 <template>
-<div>
+<div class="container">
     <!-- can also do v-on:termChange -->
 <SearchBar @termChange="onTermChange"></SearchBar>
+<!-- passing in prop from method defined -->
+<div class="row">
+<VideoDetail :video="selectedVideo"/>
 <!-- v-bind:PROPERTY NAME THAT WE WANT TO SHARE="NAME OF PROPERTY THAT WE WANT TP SHOW" -->
 <!-- can also do v-bind:videos -->
-<VideoList :videos="videos"></VideoList>
-
+<VideoList @videoSelect="onVideoSelect" :videos="videos"></VideoList>
+</div>
   </div>
 </template>
 
 <script>
 import SearchBar from "./components/SearchBar"
 import VideoList from "./components/VideoList"
+import VideoDetail from "./components/VideoDetail"
 import axios from "axios";
 
 // const API_KEY = process.env.SECRET;
@@ -20,9 +24,9 @@ export default {
     // helpful for developers for debugging tools
     name: "App",
     //app knows it can see the SearchBar 
-    components: {SearchBar, VideoList},
+    components: {SearchBar, VideoList, VideoDetail},
     data() {
-        return { videos: [] };
+        return { videos: [], selectedVideo: null };
     },
     methods: {
         //first arguement is second argument from emit (e.target.value)
@@ -40,7 +44,11 @@ export default {
             }).catch((err) => {console.log("Probably too many requests", err)})
             console.log(res)
             this.videos = res.data.items;
-        }
+        },
+        onVideoSelect(video) {
+            console.log(video)
+            this.selectedVideo = video;
+        } 
     }
 };
 </script>
