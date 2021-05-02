@@ -4,7 +4,7 @@
 <SearchBar @termChange="onTermChange"></SearchBar>
 <!-- passing in prop from method defined -->
 <div class="row">
-<VideoDetail :video="selectedVideo"/>
+<VideoDetail  :video="selectedVideo"/>
 <!-- v-bind:PROPERTY NAME THAT WE WANT TO SHARE="NAME OF PROPERTY THAT WE WANT TP SHOW" -->
 <!-- can also do v-bind:videos -->
 <VideoList @videoSelect="onVideoSelect" :videos="videos"></VideoList>
@@ -26,12 +26,13 @@ export default {
     //app knows it can see the SearchBar 
     components: {SearchBar, VideoList, VideoDetail},
     data() {
-        return { videos: [], selectedVideo: null };
+        return { videos: [], selectedVideo: null, inputChange: null };
     },
     methods: {
         //first arguement is second argument from emit (e.target.value)
         onTermChange : async function(searchTerm) {
-            
+            this.inputChange && clearTimeout(this.inputChange);
+            this.inputChange = setTimeout(async () => {try {
             const res = await axios.get('https://www.googleapis.com/youtube/v3/search', {
                 params: {
                     key: process.env.VUE_APP_APIURL,
@@ -41,9 +42,10 @@ export default {
                     q: searchTerm
                 }
             
-            }).catch((err) => {console.log("Probably too many requests", err)})
+            })
             console.log(res)
             this.videos = res.data.items;
+        } catch (err) {console.log("error!", err)}}, 1000) 
         },
         onVideoSelect(video) {
             console.log(video)
