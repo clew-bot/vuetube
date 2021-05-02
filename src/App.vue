@@ -17,7 +17,7 @@ export default {
     //app knows it can see the SearchBar 
     components: {SearchBar},
     mounted() {
-        console.log(process.env.VUE_APP_APIURL)
+    
     },
     methods: {
         //first arguement is second argument from emit (e.target.value)
