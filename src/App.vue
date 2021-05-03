@@ -31,6 +31,7 @@ export default {
     methods: {
         //first arguement is second argument from emit (e.target.value)
         onTermChange : async function(searchTerm) {
+            //debouncer 
             this.inputChange && clearTimeout(this.inputChange);
             this.inputChange = setTimeout(async () => {try {
             const res = await axios.get('https://www.googleapis.com/youtube/v3/search', {
